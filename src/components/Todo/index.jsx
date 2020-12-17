@@ -1,14 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
 function Todo() {
 
   const [nameTodo, setNameTodo] = useState('');
 
   const [todos, setTodos] = useState([]);
-
-  // useEffect(() => {
-  //   setTodos(todos);
-  // },[todos]);
 
   function handlerAddTodo(e) {
     e.preventDefault();
