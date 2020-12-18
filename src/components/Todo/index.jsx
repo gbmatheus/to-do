@@ -1,18 +1,21 @@
 import React, { useState } from 'react';
+import {FiPlus, FiTrash2} from 'react-icons/fi';
+
+import formatDate from '../../utils/formatDate';
 
 import './styles.css';
 
 function Todo() {
 
   const [nameTodo, setNameTodo] = useState('');
-
+  const [todosIncompleted, setTodosIncompleted] = useState(0);
   const [todos, setTodos] = useState([]);
 
 
   function handlerAddTodo(e) {
     e.preventDefault();
 
-    const todo = { key: Date.now(), name: nameTodo, done: false };
+    const todo = { key: Date.now(), name: nameTodo, completed: false };
 
     setNameTodo('');
     setTodos([...todos, todo]);
@@ -33,7 +36,12 @@ function Todo() {
   function handlerDoneTodo({key}, checked) {
     const todoIndex = todos.findIndex((todo) => todo.key === key);
 
-    todos[todoIndex].done = checked;
+    todos[todoIndex].completed = checked;
+
+    const incompleted = todos.filter(todo => todo.completed === false);
+    console.log(incompleted.length);
+
+    setTodosIncompleted(incompleted.length);
 
     setTodos([...todos]);
   }
@@ -43,7 +51,7 @@ function Todo() {
       <main className="todo-main">
 
         <section className="todo-info">
-          <p>{Date.now()} </p><span>Task</span>
+          <p>{formatDate()} </p><span>{todosIncompleted} Tarefas</span>
         </section>
 
         <form className="form-new-task" onSubmit={handlerAddTodo}>
@@ -55,7 +63,10 @@ function Todo() {
             placeholder="Nova tarefa"
             required
           />
-          <button>+</button>
+          <button>
+            <FiPlus size={26}  />
+            {/* <FiPlusSquare /> */}
+          </button>
         </form>
 
         <section className="todo-list">
@@ -65,10 +76,12 @@ function Todo() {
               <ul>
                 {todos.map((todo) => (
                   <li key={todo.key} className="todo-item">
-                    <input type="checkbox" checked={todo.done} onChange={e => handlerDoneTodo(todo, e.target.checked)} />
+                    <input type="checkbox" checked={todo.completed} onChange={e => handlerDoneTodo(todo, e.target.checked)} />
 
-                    <strong className={todo.done ? "checked" : ""}>{todo.name} </strong>
-                    <button onClick={() => handlerRemoveTodo(todo)}>Remove</button>
+                    <strong className={todo.completed ? "checked" : ""}>{todo.name} </strong>
+                    <button onClick={() => handlerRemoveTodo(todo)}>
+                      <FiTrash2 size={26} color={"#fff"} />
+                    </button>
                   </li>
                 ))}
               </ul>
