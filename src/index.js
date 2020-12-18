@@ -4,6 +4,7 @@ import App from './App';
 
 import './assets/styles/reset.css';
 import './assets/styles/generic.css';
+import './assets/styles/settings.css';
 import './assets/styles/base.css';
 
 ReactDOM.render(
