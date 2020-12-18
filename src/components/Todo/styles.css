@@ -1,3 +1,19 @@
+.todo-header {
+  font-size: 72px;
+  font-weight: 200;
+  margin-bottom: 100px;
+  color: #fff;
+  text-shadow: 7px 7px var(--color-primary);
+
+
+}
+
+.todo-header::after {
+  content: 'To Do App';
+  /* margin-bottom: 100px; */
+
+}
+
 .todo-main {
   background-color: var(--color-background);
 

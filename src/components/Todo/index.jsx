@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {FiPlus, FiTrash2} from 'react-icons/fi';
 
 import formatDate from '../../utils/formatDate';
@@ -9,8 +9,28 @@ function Todo() {
 
   const [nameTodo, setNameTodo] = useState('');
   const [todosIncompleted, setTodosIncompleted] = useState(0);
-  const [todos, setTodos] = useState([]);
+  // const [todos, setTodos] = useState([]);
+  const [todos, setTodos] = useState(() => {
+    const todosStorage = localStorage.getItem('@Todos:list');
 
+    if(!todosStorage) {
+      return [];
+    }
+
+    return JSON.parse(todosStorage);
+
+  });
+
+  useEffect(() => {
+
+    const incompleted = todos.filter(todo => todo.completed === false);
+    console.log(incompleted.length);
+
+    setTodosIncompleted(incompleted.length);
+
+    localStorage.setItem('@Todos:list', JSON.stringify(todos));
+
+  },[todos])
 
   function handlerAddTodo(e) {
     e.preventDefault();
@@ -38,16 +58,13 @@ function Todo() {
 
     todos[todoIndex].completed = checked;
 
-    const incompleted = todos.filter(todo => todo.completed === false);
-    console.log(incompleted.length);
-
-    setTodosIncompleted(incompleted.length);
-
     setTodos([...todos]);
   }
 
   return (
     <>
+      <header className="todo-header"/>
+
       <main className="todo-main">
 
         <section className="todo-info">
